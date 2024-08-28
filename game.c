@@ -88,7 +88,7 @@ void gameTick()
     }else if(pgame->m_gameState == GAME_OVER){
         if(!g_temp)
         {
-            createBroadcast("press r to retry\n", 200, 50);  
+            createBroadcast("press r to retry\n", 1000, 50);  
             g_temp = true;
         }
     }
