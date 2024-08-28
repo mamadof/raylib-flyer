@@ -24,6 +24,9 @@ typedef struct {
 
 void playerTick(Player_t *pplayer);
 Player_t *createPlayer();
+void DistroyPlayer(int ID);
+Player_t *getPlayerByID(int ID);
+unsigned int getNumberOfPlayers();
 
 
 #endif //PLAYER_H

@@ -19,5 +19,6 @@ enemy_t *createEnemy(Vector2 pos, Vector2 vel);
 void EnemyTick(enemy_t *penemy);
 enemy_t *getEnemyByID(int ID);
 void distroyEnemy(int ID);
+unsigned long getNumberOfEnemies();
 
 #endif //SPACE_ROCK_H

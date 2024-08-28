@@ -8,6 +8,7 @@
 
 extern game_t *pgame;
 Player_t *ga_pplayers[MAX_PLAYERS];
+static int g_numberOfPlayers = 0;
 const float g_friction = 0.95f;
 const Vector2 PLAYERBODY[3] = {
 -15,40,
@@ -82,7 +83,7 @@ void playerTick(Player_t *pplayer)
 Player_t *createPlayer()
 {
   Player_t *pplayer = (Player_t*)malloc(sizeof(Player_t));
-  ga_pplayers[pgame->m_numberOfPlayers] = pplayer;
+  ga_pplayers[g_numberOfPlayers] = pplayer;
   pplayer->m_position = (Vector2){0,10};
   pplayer->m_velocity = (Vector2){0,0};
   pplayer->m_prepos = (Vector2){0,0};
@@ -100,7 +101,35 @@ Player_t *createPlayer()
   pplayer->m_HP = pplayer->m_maxHP;
   pplayer->m_damage = 1;
   pplayer->m_weaponCoolDown = 20;
-  pplayer->m_ID = pgame->m_numberOfPlayers;
-  pgame->m_numberOfPlayers += 1;
+  pplayer->m_ID = g_numberOfPlayers;
+  ++g_numberOfPlayers;
   return pplayer;
+}
+
+Player_t *getPlayerByID(int ID)
+{
+  return ga_pplayers[ID];
+}
+
+void DistroyPlayer(int ID)
+{
+  if(ID == -1)
+  {
+    for(int i = 0; i < MAX_PLAYERS; i++)
+    {
+      if(ga_pplayers[i] == NULL)continue;
+      free(ga_pplayers[i]);
+      ga_pplayers[i] = NULL;
+    }
+    g_numberOfPlayers = 0;
+    return;
+  }
+    free(ga_pplayers[ID]);
+    ga_pplayers[ID] = NULL;
+    --g_numberOfPlayers;
+}
+
+unsigned int getNumberOfPlayers()
+{
+  return g_numberOfPlayers;
 }

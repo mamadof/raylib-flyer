@@ -7,6 +7,7 @@
 #include "game.h"
 #include "enemy.h"
 #include "world_interface.h"
+#include "texture.h"
 extern game_t *pgame;
 
 static char g_text[600];
@@ -24,7 +25,7 @@ void renderAll()
     "use lmb to shoot and choose\n\n"
     "use space to accelerate", 
     GetFPS(),
-    pgame->m_numberOfEnemys);
+    getNumberOfEnemies());
     DrawText(g_text, -100, -100, 20, BLACK);
     // Image block = LoadImage("data/images/block.png");
     // Texture2D texture = LoadTextureFromImage(block);
@@ -33,11 +34,12 @@ void renderAll()
     drawGameBoarder();
 
     //render players
-    if(pgame->m_numberOfPlayers > 0)
+    if(getNumberOfPlayers() > 0)
     {
-        for(int i=0; i< pgame->m_numberOfPlayers; i++)//render players
+        for(int i=0; i < MAX_PLAYERS; i++)//render players
         {
             Player_t *pplayer = getPlayerByID(i);
+            if(pplayer == NULL)continue;
             DrawTriangle(
             pplayer->m_body[1],
             pplayer->m_body[0],
@@ -56,7 +58,7 @@ void renderAll()
         BeginMode2D(pgame->m_cam);
     }
     //render projectiles
-    if(pgame->m_numberOfProjectiles > 0)
+    if(getNumberOfProjectiles() > 0)
     {
         for(int i=0; i< MAX_PROJECTILES; i++)//render players
         {
@@ -66,7 +68,7 @@ void renderAll()
         }
     }
     //render enemies
-    if(pgame->m_numberOfEnemys > 0)
+    if(getNumberOfEnemies() > 0)
     {
         for(int i=0; i< MAX_ENEMIES; i++)
         {
@@ -115,9 +117,9 @@ void drawGrid()
         for(int y = -GAMEWORLD_SIZE/50; y < GAMEWORLD_SIZE/50; y++)
         {
             distance = Vector2Distance((Vector2){x,y}, (Vector2){0,0});
-            DrawTexture(pgame->ma_textures[TEXTURE_BLOCK],
-            pgame->ma_textures[TEXTURE_BLOCK].width*x,
-            pgame->ma_textures[TEXTURE_BLOCK].height*y,
+            DrawTexture(getGameTexture(TEXTURE_BLOCK),
+            getGameTexture(TEXTURE_BLOCK).width*x,
+            getGameTexture(TEXTURE_BLOCK).height*y,
             (Color){distance*2,distance*2,0,distance*2});
         }
     }
@@ -125,8 +127,8 @@ void drawGrid()
 
 void drawGameBoarder()
 {
-    int textureWidth = pgame->ma_textures[TEXTURE_BOARDER].width;
-    int textureheight = pgame->ma_textures[TEXTURE_BOARDER].height;
+    int textureWidth = getGameTexture(TEXTURE_BOARDER).width;
+    int textureheight = getGameTexture(TEXTURE_BOARDER).height;
     int xiter = GAMEWORLD_SIZE/textureWidth;
     int yiter = GAMEWORLD_SIZE/textureheight;
     for(int x = 0; x <= yiter; x++)
@@ -134,15 +136,15 @@ void drawGameBoarder()
         for(int y = 0; y <= yiter; y++)
         {
             //draw boarder up and down
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], x*textureWidth, -GAMEWORLD_SIZE-textureheight, RED);
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], -x*textureWidth, -GAMEWORLD_SIZE-textureheight, RED);
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], x*textureWidth, GAMEWORLD_SIZE, RED);
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], -x*textureWidth, GAMEWORLD_SIZE, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), x*textureWidth, -GAMEWORLD_SIZE-textureheight, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), -x*textureWidth, -GAMEWORLD_SIZE-textureheight, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), x*textureWidth, GAMEWORLD_SIZE, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), -x*textureWidth, GAMEWORLD_SIZE, RED);
             //draw boarder left and right
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], -GAMEWORLD_SIZE-textureWidth, y*textureheight, RED);
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], -GAMEWORLD_SIZE-textureWidth, -y*textureheight-textureheight, RED);
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], GAMEWORLD_SIZE, y*textureheight, RED);
-            DrawTexture(pgame->ma_textures[TEXTURE_BOARDER], GAMEWORLD_SIZE, -y*textureheight, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), -GAMEWORLD_SIZE-textureWidth, y*textureheight, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), -GAMEWORLD_SIZE-textureWidth, -y*textureheight-textureheight, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), GAMEWORLD_SIZE, y*textureheight, RED);
+            DrawTexture(getGameTexture(TEXTURE_BOARDER), GAMEWORLD_SIZE, -y*textureheight, RED);
         }
     }
 

@@ -6,6 +6,9 @@
 
 extern game_t *pgame;
 textBox_t *ga_pTextBoxes[MAX_TEXTBOX];
+t_broadcast *ga_pbroadCasts[MAX_BROADCASTS];
+static unsigned g_numberOfBroadCasts;
+
 
 void textBoxTick(textBox_t *ptext)
 {
@@ -55,4 +58,58 @@ void createTextBox(char *text, Vector2 pos, int fontSize, Color color, TextBoxes
 textBox_t *getTextBoxByID(int ID)
 {
     return ga_pTextBoxes[ID];
+}
+
+void createBroadcast(char *text, int duration, int fontsize)
+{
+    t_broadcast *pbrod = malloc(sizeof(t_broadcast));
+    for(int i = 0; i < MAX_BROADCASTS; i++)
+    {
+        if(ga_pbroadCasts[i] != NULL)continue;
+        ga_pbroadCasts[i] = pbrod;
+        pbrod->m_ID = i;
+        break;
+    }
+    pbrod->m_text = text;
+    pbrod->m_duration = duration;
+    pbrod->m_tick = 0;
+    ++g_numberOfBroadCasts;
+}
+
+void broadcastTick(t_broadcast *pbrod)
+{
+    ++pbrod->m_tick;
+    if(pbrod->m_tick >= pbrod->m_duration)
+    {
+        distroyBroadcast(pbrod->m_ID);
+        return;
+    }
+}
+
+t_broadcast *getBroadcastByID(int ID)
+{
+    return ga_pbroadCasts[ID];
+}
+
+void distroyBroadcast(int ID)
+{
+    if(ID == -1)
+    {
+        for(int i = 0; i < MAX_BROADCASTS; i++)
+        {
+            if(ga_pbroadCasts[i] == NULL)continue;
+            free(ga_pbroadCasts[i]);
+            ga_pbroadCasts[i] = NULL;
+        }
+        g_numberOfBroadCasts = 0;
+        return;
+    }
+    free(ga_pbroadCasts[ID]);
+    ga_pbroadCasts[ID] = NULL;
+    --g_numberOfBroadCasts;
+}
+
+unsigned getNumberOfBroadcasts()
+{
+    return g_numberOfBroadCasts;
 }

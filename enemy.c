@@ -8,6 +8,7 @@
 
 enemy_t *ga_pEnemys[MAX_ENEMIES];
 extern game_t *pgame;
+static unsigned long g_numberOfEnemies = 0;
 
 enemy_t *createEnemy(Vector2 pos, Vector2 vel)
 {
@@ -28,7 +29,7 @@ enemy_t *createEnemy(Vector2 pos, Vector2 vel)
     penemy->m_maxHP = penemy->m_radios;
     penemy->m_HP = penemy->m_maxHP;
     penemy->m_ID = i;
-    ++pgame->m_numberOfEnemys;
+    ++g_numberOfEnemies;
     return penemy;
 }
 
@@ -52,7 +53,23 @@ void EnemyTick(enemy_t *penemy)
 
 void distroyEnemy(int ID)
 {
+    if(ID == -1)
+    {
+        for(int i = 0; i < MAX_ENEMIES; i++)
+        {
+            if(ga_pEnemys[i] == NULL)continue;
+            free(ga_pEnemys[i]);
+            ga_pEnemys[i] = NULL;
+        }
+        g_numberOfEnemies = 0;
+        return;
+    }
     free(ga_pEnemys[ID]);
     ga_pEnemys[ID] = NULL;
-    --pgame->m_numberOfEnemys;
+    --g_numberOfEnemies;
+}
+
+unsigned long getNumberOfEnemies()
+{
+    return g_numberOfEnemies;
 }

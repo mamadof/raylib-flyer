@@ -8,6 +8,7 @@
 
 extern game_t *pgame;
 Projectile_t *ga_pprojectiles[MAX_PROJECTILES];
+unsigned long long g_numberOfProjectiles = 0;
 
 void projectileTick(Projectile_t *pprojec)
 {
@@ -66,23 +67,42 @@ Projectile_t *createProjectile(Vector2 pos, Vector2 vel, float angle)
     break;
   }
 
-  Vector2 projSpeed = Vector2Rotate((Vector2){0,-10}, angle);
-  // projvel = Vector2Add(projvel, vel);
-  // pprojec->m_velocity = Vector2Add(projSpeed, Vector2Scale(vel, 0.5f));
-  pprojec->m_velocity = projSpeed;
+  pprojec->m_velocity = Vector2Rotate((Vector2){0,-10}, angle);
   pprojec->m_position = pos;
   pprojec->m_color = GetRandomColorNoAlpha();
   pprojec->m_radios = GetRandomValue(5, 10);
   pprojec->m_damage = pprojec->m_radios*2;
   pprojec->m_tick = 0;
 
-  ++pgame->m_numberOfProjectiles;
+  ++g_numberOfProjectiles;
   return pprojec;
+}
+
+Projectile_t *getProjectileByID(int ID)
+{
+  return ga_pprojectiles[ID];
 }
 
 void distroyProjectile(int ID)
 {
+  if(ID == -1)
+  {
+    for(int i = 0; i < MAX_PROJECTILES; i++)
+    {
+      if(ga_pprojectiles[i] == NULL)continue;
+      free(ga_pprojectiles[i]);
+      ga_pprojectiles[i] = NULL;
+    }
+    g_numberOfProjectiles = 0;
+    return;
+  }
   free(ga_pprojectiles[ID]);
   ga_pprojectiles[ID] = NULL;
-  --pgame->m_numberOfProjectiles;
+  --g_numberOfProjectiles;
 }
+
+unsigned long long getNumberOfProjectiles()
+{
+  return g_numberOfProjectiles;
+}
+

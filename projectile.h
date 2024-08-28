@@ -18,5 +18,7 @@ typedef struct {
 Projectile_t *createProjectile(Vector2 pos, Vector2 vel, float angle);
 void projectileTick(Projectile_t *pprojec);
 void distroyProjectile(int ID);
+Projectile_t *getProjectileByID(int ID);
+unsigned long long getNumberOfProjectiles();
 
 #endif //PROJECTILE_H

@@ -13,7 +13,14 @@ typedef enum {
   SOUND_HOVER,
   SOUND_COUNT
 }GameSounds;
+
+typedef enum{
+  MASK_GLOBAL,
+  MASK_DISTANT,
+  MASK_COUNT
+}SoundMask;
+
 void loadGameSounds();
-void playGameSound(GameSounds);
+void playGameSound(GameSounds, Vector2 pos, SoundMask);
 
 #endif //SOUNDS_H
