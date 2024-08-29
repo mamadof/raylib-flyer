@@ -4,13 +4,9 @@
 
 typedef enum {
   SOUND_SHOOT,
-  SOUND_SHOOT_2,
   SOUND_HURT,
   SOUND_HIT,
   SOUND_ENEMY_DIE,
-  SOUND_GAMEOVER,
-  SOUND_BUY,
-  SOUND_HOVER,
   SOUND_COUNT
 }GameSounds;
 

@@ -8,6 +8,7 @@
 #include "enemy.h"
 #include "world_interface.h"
 #include "texture.h"
+#include "sounds.h"
 
 
 game_t g_game;
@@ -110,6 +111,8 @@ void gameInit()
     SetTargetFPS(FPS);
     //texture loading
     loadGameTexture();
+    //load sounds
+    loadGameSounds();
     //camera setup
     pgame->m_cam.offset = (Vector2){(float)GetScreenWidth()/2, (float)GetScreenHeight()/2};
     pgame->m_cam.rotation = 0;

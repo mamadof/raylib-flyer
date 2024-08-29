@@ -5,6 +5,7 @@
 #include <raymath.h>
 #include "helpers.h"
 #include "enemy.h"
+#include "sounds.h"
 
 extern game_t *pgame;
 Projectile_t *ga_pprojectiles[MAX_PROJECTILES];
@@ -75,6 +76,7 @@ Projectile_t *createProjectile(Vector2 pos, Vector2 vel, float angle)
   pprojec->m_tick = 0;
 
   ++g_numberOfProjectiles;
+  playGameSound(SOUND_SHOOT, (Vector2){0,0}, MASK_GLOBAL);
   return pprojec;
 }
 

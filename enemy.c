@@ -5,6 +5,7 @@
 #include "helpers.h"
 #include <raymath.h>
 #include <math.h>
+#include "sounds.h"
 
 enemy_t *ga_pEnemys[MAX_ENEMIES];
 extern game_t *pgame;
@@ -64,6 +65,7 @@ void distroyEnemy(int ID)
         g_numberOfEnemies = 0;
         return;
     }
+    playGameSound(SOUND_ENEMY_DIE, ga_pEnemys[ID]->m_position, MASK_DISTANT);
     free(ga_pEnemys[ID]);
     ga_pEnemys[ID] = NULL;
     --g_numberOfEnemies;
