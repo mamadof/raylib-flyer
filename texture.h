@@ -12,5 +12,7 @@ typedef enum {
 void loadGameTexture();
 void unloadGameTexture();
 Texture2D getGameTexture(GAME_TEXTURES);
+RenderTexture getWorldTexture();
+
 
 #endif //TEXTURE_H

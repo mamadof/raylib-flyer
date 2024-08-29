@@ -15,7 +15,8 @@
 // #define GRID_WIDTH 50
 // #define GRID_HEIGHT 50
 #define GAMEWORLD_SIZE 3000
-#define BACKGROUND_COLOR (Color){ 200, 200, 200, 255 }
+#define BACKGROUND_COLOR (Color){ 100, 100, 120, 255 }
+#define BACKGROUND_COLOR_2 (Color){ 200, 200, 200, 255 }
 
 enum WAVE_STATE{
     WAVE_STARTED,
